@@ -2,7 +2,7 @@
 /**
  * Plugin Name: SLP Redirector
  * Description: Allows editors and admins to set specific redirection rules for missing posts of each post type to a relative URL or the post type's archive page. Use case: a site which produces posts which are only fresh for a short time and routinely deletes old posts when they are no longer relevant.
- * Version: 1.0
+ * Version: 1.1
  * Author: Scott Roberts, KSStorm <dev@ksstorm.net>
  * Text Domain: slp-redirector
  * Domain Path: /languages
