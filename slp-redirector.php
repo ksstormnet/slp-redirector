@@ -15,8 +15,8 @@ if (!defined('ABSPATH')) {
 add_action('admin_menu', 'slpr_add_admin_page');
 function slpr_add_admin_page() {
     add_options_page(
-        __('Short-Lived Post Redirector Settings', 'short-lived-post-redirector'), 
-        __('SLPR Settings', 'short-lived-post-redirector'), 
+        __('SLP Redirector Settings', 'slp-redirector'), 
+        __('SLPR Settings', 'slp-redirector'), 
         'manage_options', 
         'slpr_settings', 
         'slpr_settings_page'
@@ -26,7 +26,7 @@ function slpr_add_admin_page() {
 function slpr_settings_page() {
     ?>
     <div class="wrap">
-        <h2><?php _e('Short-Lived Post Redirector Settings', 'short-lived-post-redirector'); ?></h2>
+        <h2><?php _e('SLP Redirector Settings', 'slp-redirector'); ?></h2>
         <form method="post" action="options.php">
             <?php
             settings_fields('slpr_options_group');
@@ -57,7 +57,7 @@ function slpr_register_settings() {
 }
 
 function slpr_section_text() {
-    echo '<p>' . __('Select the post types for which missing posts should be redirected, and specify a custom redirect URL for each.', 'short-lived-post-redirector') . '</p>';
+    echo '<p>' . __('Select the post types for which missing posts should be redirected, and specify a custom redirect URL for each.', 'slp-redirector') . '</p>';
 }
 
 function slpr_post_type_field($args) {
@@ -66,9 +66,9 @@ function slpr_post_type_field($args) {
     $checked = isset($options['post_types'][$post_type]) ? 'checked="checked"' : '';
     $url_value = isset($options['urls'][$post_type]) ? $options['urls'][$post_type] : '';
 
-    echo "<input type='checkbox' name='slpr_options[post_types][$post_type]' $checked /> " . __('Enable Redirect', 'short-lived-post-redirector') . "<br />";
+    echo "<input type='checkbox' name='slpr_options[post_types][$post_type]' $checked /> " . __('Enable Redirect', 'slp-redirector') . "<br />";
     echo "<input type='text' name='slpr_options[urls][$post_type]' value='$url_value' placeholder='/your-relative-path' />";
-    echo "<p>" . __('Enter a relative URL for redirects. Only applicable if redirect is enabled for this post type.', 'short-lived-post-redirector') . "</p>";
+    echo "<p>" . __('Enter a relative URL for redirects. Only applicable if redirect is enabled for this post type.', 'slp-redirector') . "</p>";
 }
 
 function slpr_options_validate($input) {
