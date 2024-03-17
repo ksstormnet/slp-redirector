@@ -2,7 +2,7 @@
 /**
  * Plugin Name: SLP Redirector
  * Description: Allows editors and admins to set specific redirection rules for missing posts of each post type to a relative URL or the post type's archive page. Use case: a site which produces posts which are only fresh for a short time and routinely deletes old posts when they are no longer relevant.
- * Version: 1.1
+ * Version: 1.2.0
  * Author: Scott Roberts, KSStorm <dev@ksstorm.net>
  * Text Domain: slp-redirector
  * Domain Path: /languages
@@ -107,6 +107,33 @@ function slpr_save_redirect() {
     update_option('slpr_options', $options);
 
     wp_send_json_success('Redirect saved');
+}
+
+add_filter('redirect_canonical', 'slpr_interrupt_wp_redirect', 10, 2);
+function slpr_interrupt_wp_redirect($redirect_url, $requested_url) {
+    global $wp_query;
+
+    // Check if it's a 404 and a single post request
+    if (is_404() && isset($wp_query->query_vars['name'])) {
+        $requested_slug = $wp_query->query_vars['name'];
+
+        // Get your plugin's redirect settings
+        $options = get_option('slpr_options');
+        if (!empty($options['post_types'])) {
+            foreach ($options['post_types'] as $post_type => $enabled) {
+                if ($enabled && isset($options['urls'][$post_type])) {
+                    // Check if the requested slug matches one of the slugs that should be redirected
+                    // This is a simplified example; you may need more complex logic here
+                    if (strpos($options['urls'][$post_type], $requested_slug) !== false) {
+                        // Prevent WordPress from redirecting to a similar slug
+                        return false;
+                    }
+                }
+            }
+        }
+    }
+
+    return $redirect_url;
 }
 
 register_uninstall_hook(__FILE__, 'slpr_uninstall');
